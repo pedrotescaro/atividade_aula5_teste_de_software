@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Soma</title>
+</head>
+<body>
+    <input type="number" id="num1">
+    <input type="number" id="num2">
+    <button id="somar">Somar</button>
+    <div id="resultado"></div>
+
+    <script>
+        document.getElementById("somar").addEventListener("click", function() {
+            var num1 = parseInt(document.getElementById("num1").value);
+            var num2 = parseInt(document.getElementById("num2").value);
+            document.getElementById("resultado").textContent = num1 + num2;
+        });
+    </script>
+</body>
+</html>
