@@ -1,29 +1,26 @@
 import os
 import unittest
 from selenium import webdriver
-from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import WebDriverException
 
 class TestSomaInterfaceEdge(unittest.TestCase):
 
     def setUp(self):
-        # 1. Configurações para usar o navegador já instalado
         edge_options = EdgeOptions()
-        
-        # 2. Localiza o driver na mesma pasta do script
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        driver_path = os.path.join(base_dir, "msedgedriver.exe")
+        edge_options.add_argument("--headless=new")
 
-        # 3. Inicia o serviço apontando para o arquivo local
-        service = EdgeService(executable_path=driver_path)
-        
-        # Inicializa o driver
-        self.driver = webdriver.Edge(service=service, options=edge_options)
-        
-        # 4. Define o caminho do seu arquivo HTML
+        try:
+            self.driver = webdriver.Edge(options=edge_options)
+        except WebDriverException as error:
+            raise unittest.SkipTest(
+                f"Edge indisponível no ambiente atual: {error.msg}"
+            ) from error
+
+        base_dir = os.path.dirname(os.path.abspath(__file__))
         html_file_path = os.path.abspath(os.path.join(base_dir, "soma.html"))
         self.driver.get(f"file:///{html_file_path}")
 
